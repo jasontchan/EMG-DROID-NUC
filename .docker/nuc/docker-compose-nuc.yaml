@@ -10,6 +10,16 @@ services:
       ROBOT_IP: ${ROBOT_IP}
       LAPTOP_IP: ${LAPTOP_IP}
     volumes:
+      - ${ROOT_DIR}/droid/fairo/polymetis/polymetis/src/clients/franka_panda_client/franka_hand_client.cpp:/app/droid/fairo/polymetis/polymetis/src/clients/franka_panda_client/franka_hand_client.cpp:rw
+      - ${ROOT_DIR}/droid/fairo/polymetis/polymetis/include/polymetis/clients/franka_hand_client.hpp:/app/droid/fairo/polymetis/polymetis/include/polymetis/clients/franka_hand_client.hpp:rw
+      - ${ROOT_DIR}/droid/fairo/polymetis/polymetis/src/clients/franka_panda_client/third_party/libfranka/src/network.h:/app/droid/fairo/polymetis/polymetis/src/clients/franka_panda_client/third_party/libfranka/src/network.h:rw
+      - ${ROOT_DIR}/droid/fairo/polymetis/polymetis/src/clients/franka_panda_client/third_party/libfranka/src/gripper.cpp:/app/droid/fairo/polymetis/polymetis/src/clients/franka_panda_client/third_party/libfranka/src/gripper.cpp:rw
+      - /usr/include/franka/gripper.h:/app/droid/fairo/polymetis/polymetis/src/clients/franka_panda_client/third_party/libfranka/include/franka/gripper.h:rw
+      - ${ROOT_DIR}/droid/fairo/polymetis/polymetis/protos/polymetis.proto:/app/droid/fairo/polymetis/polymetis/protos/polymetis.proto:rw
+      - ${ROOT_DIR}/droid/franka/launch_gripper.sh:/app/droid/franka/launch_gripper.sh:rw
+      - ${ROOT_DIR}/droid/franka/launch_robot.sh:/app/droid/franka/launch_robot.sh:rw\
+      - ${ROOT_DIR}/droid/fairo/polymetis/polymetis/python/polymetis/gripper_interface.py:/app/droid/fairo/polymetis/polymetis/python/polymetis/gripper_interface.py:rw
+      - ${ROOT_DIR}/droid/franka/robot.py:/app/droid/franka/robot.py:rw
       - ${ROOT_DIR}/droid/misc/parameters.py:/app/droid/misc/parameters.py
       - ${ROOT_DIR}/config/${ROBOT_TYPE}/franka_hardware.yaml:/app/droid/fairo/polymetis/polymetis/conf/robot_client/franka_hardware.yaml
       - ${ROOT_DIR}/config/${ROBOT_TYPE}/franka_panda.yaml:/app/droid/fairo/polymetis/polymetis/conf/robot_model/franka_panda.yaml
@@ -34,4 +44,6 @@ services:
     deploy:
       restart_policy: 
         condition: any
+    tty: true          # <- allocate a TTY (helps spdlog colors & line buffering)
+    stdin_open: true
 

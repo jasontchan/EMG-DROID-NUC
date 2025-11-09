@@ -29,12 +29,17 @@ COPY . /app
 WORKDIR /app
 
 # install miniconda 
-RUN wget \
-    https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh \
-    && mkdir /root/.conda \
-    && bash Miniconda3-latest-Linux-x86_64.sh -b \
-    && rm -f Miniconda3-latest-Linux-x86_64.sh
-ENV PATH /root/miniconda3/bin:$PATH
+# RUN wget \
+#     https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh \
+#     && mkdir /root/.conda \
+#     && bash Miniconda3-latest-Linux-x86_64.sh -b \
+#     && rm -f Miniconda3-latest-Linux-x86_64.sh
+# ENV PATH /root/miniconda3/bin:$PATH
+ARG MINICONDA=Miniconda3-py39_25.7.0-2-Linux-x86_64.sh
+RUN wget -q https://repo.anaconda.com/miniconda/${MINICONDA} \
+ && bash ${MINICONDA} -b -p /root/miniconda3 \
+ && rm -f ${MINICONDA}
+ENV PATH=/root/miniconda3/bin:$PATH
 
 # setup polymetis conda env
 WORKDIR ${NUC_POLYMETIS_DIR}
